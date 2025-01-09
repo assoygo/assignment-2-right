@@ -1,0 +1,190 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+// Base class for encapsulation and inheritance
+class Profile {
+    private String username;
+    private String bio;
+    private int followers;
+
+    public Profile(String username, String bio, int followers) {
+        this.username = username;
+        this.bio = bio;
+        this.followers = followers;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "username='" + username + '\'' +
+                ", bio='" + bio + '\'' +
+                ", followers=" + followers +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Profile profile = (Profile) o;
+        return Objects.equals(username, profile.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
+    }
+}
+
+class Post {
+    private String content;
+    private String author;
+    private int likes;
+
+    public Post(String content, String author, int likes) {
+        this.content = content;
+        this.author = author;
+        this.likes = likes;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "content='" + content + '\'' +
+                ", author='" + author + '\'' +
+                ", likes=" + likes +
+                '}';
+    }
+}
+
+class SocialNetwork {
+    private String name;
+    private List<Profile> profiles;
+    private List<Post> posts;
+
+    public SocialNetwork(String name) {
+        this.name = name;
+        this.profiles = new ArrayList<>();
+        this.posts = new ArrayList<>();
+    }
+
+    public void addProfile(Profile profile) {
+        profiles.add(profile);
+    }
+
+    public void addPost(Post post) {
+        posts.add(post);
+    }
+
+    public List<Profile> searchProfilesByUsername(String username) {
+        return profiles.stream()
+                .filter(p -> p.getUsername().equalsIgnoreCase(username))
+                .collect(Collectors.toList());
+    }
+
+    public List<Post> getPostsByAuthor(String author) {
+        return posts.stream()
+                .filter(p -> p.getAuthor().equalsIgnoreCase(author))
+                .collect(Collectors.toList());
+    }
+
+    public void sortProfilesByFollowers() {
+        profiles.sort(Comparator.comparingInt(Profile::getFollowers).reversed());
+    }
+
+    public void displayProfiles() {
+        profiles.forEach(System.out::println);
+    }
+
+    public void displayPosts() {
+        posts.forEach(System.out::println);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        SocialNetwork network = new SocialNetwork("Connectify");
+
+        // Adding profiles
+        Profile profile1 = new Profile("Kozhanov_Asylkhan", "just enjoying life", 1500);
+        Profile profile2 = new Profile("Era_uzyn", "Food blogger", 1000);
+        Profile profile3 = new Profile("Ali", "Fitness coach", 50);
+
+        network.addProfile(profile1);
+        network.addProfile(profile2);
+        network.addProfile(profile3);
+
+        // Adding posts
+        Post post1 = new Post("Exploring the mountains!", "Kozhanov_Asylkhan", 1200);
+        Post post2 = new Post("Best pizza in town!", "Era_uzyn", 400);
+        Post post3 = new Post("Morning workout routine.", "Ali", 15);
+
+        network.addPost(post1);
+        network.addPost(post2);
+        network.addPost(post3);
+
+        // Displaying profiles and posts
+        System.out.println("Profiles:");
+        network.displayProfiles();
+
+        System.out.println("\nPosts:");
+        network.displayPosts();
+
+        // Search and sort examples
+        System.out.println("\nProfiles sorted by followers:");
+        network.sortProfilesByFollowers();
+        network.displayProfiles();
+
+        System.out.println("\nPosts by Era_uzyn:");
+        List<Post> EraPosts = network.getPostsByAuthor("Era_uzyn");
+        EraPosts.forEach(System.out::println);
+    }
+}
