@@ -60,6 +60,45 @@ class Profile {
     }
 }
 
+// Subclass extending Profile to demonstrate inheritance
+class BusinessProfile extends Profile {
+    private String companyName;
+    private String website;
+
+    public BusinessProfile(String username, String bio, int followers, String companyName, String website) {
+        super(username, bio, followers);
+        this.companyName = companyName;
+        this.website = website;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    @Override
+    public String toString() {
+        return "BusinessProfile{" +
+                "username='" + getUsername() + '\'' +
+                ", bio='" + getBio() + '\'' +
+                ", followers=" + getFollowers() +
+                ", companyName='" + companyName + '\'' +
+                ", website='" + website + '\'' +
+                '}';
+    }
+}
+
 class Post {
     private String content;
     private String author;
@@ -154,18 +193,18 @@ public class Main {
         SocialNetwork network = new SocialNetwork("Connectify");
 
         // Adding profiles
-        Profile profile1 = new Profile("Kozhanov_Asylkhan", "just enjoying life", 1500);
-        Profile profile2 = new Profile("Era_uzyn", "Food blogger", 1000);
-        Profile profile3 = new Profile("Ali", "Fitness coach", 50);
+        Profile profile1 = new Profile("Asylkhan", "just enjoying life", 120);
+        BusinessProfile profile2 = new BusinessProfile("Era", "Food blogger", 300, "Foodies Inc.", "www.foodies.com");
+        Profile profile3 = new Profile("Ali", "Fitness coach", 200);
 
         network.addProfile(profile1);
         network.addProfile(profile2);
         network.addProfile(profile3);
 
         // Adding posts
-        Post post1 = new Post("Exploring the mountains!", "Kozhanov_Asylkhan", 1200);
-        Post post2 = new Post("Best pizza in town!", "Era_uzyn", 400);
-        Post post3 = new Post("Morning workout routine.", "Ali", 15);
+        Post post1 = new Post("Exploring the mountains!", "Asylkhan", 45);
+        Post post2 = new Post("Best pizza in town!", "Era", 150);
+        Post post3 = new Post("Morning workout routine.", "Ali", 75);
 
         network.addPost(post1);
         network.addPost(post2);
@@ -183,8 +222,8 @@ public class Main {
         network.sortProfilesByFollowers();
         network.displayProfiles();
 
-        System.out.println("\nPosts by Era_uzyn:");
-        List<Post> EraPosts = network.getPostsByAuthor("Era_uzyn");
+        System.out.println("\nPosts by Era:");
+        List<Post> EraPosts = network.getPostsByAuthor("Era");
         EraPosts.forEach(System.out::println);
     }
 }
